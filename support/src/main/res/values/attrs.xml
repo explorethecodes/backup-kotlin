@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChipsBoxWidget">
+        <attr name="chipText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ChipsBoxLayoutWidget">
+        <attr name="chipsCount" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SearchableGroupMultiSelector">
+        <attr name="searchText" format="string"/>
+    </declare-styleable>
+</resources>

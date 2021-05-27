@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/grey_60"
+    android:id="@+id/expandable_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+   >
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:background="@color/grey_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/id_chip_text"
+            android:text="English"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/id_chip_close"
+            android:padding="5dp"
+            android:src="@drawable/ic_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
