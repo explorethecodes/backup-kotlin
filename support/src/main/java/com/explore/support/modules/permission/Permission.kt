@@ -1,4 +1,4 @@
-package com.explore.support.module.permission
+package com.explore.support.modules.permission
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

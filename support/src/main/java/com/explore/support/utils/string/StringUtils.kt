@@ -4,6 +4,10 @@ import com.explore.support.store.constants.Constants.STRING.EMPTY
 import com.explore.support.store.constants.Constants.STRING.NOT_AVAILABLE_IN_SHORT
 import com.explore.support.store.constants.Constants.STRING.SPACE
 
+fun String.removeStartingSlash() : String {
+    return removePrefix("/")
+}
+
 fun CharSequence.countWords() : Int {
     val sentence = this.toString().trim()
 //    sentence.split("\\s+").first().length

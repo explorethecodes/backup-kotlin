@@ -1,10 +1,11 @@
-package com.explore.support
+package com.explore.journovideos
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import com.explore.support.R
 import com.explore.support.databinding.WidgetMultiselectDropdownBinding
 import kotlinx.android.synthetic.main.widget_multiselect_dropdown.view.*
 

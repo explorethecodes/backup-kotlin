@@ -1,4 +1,4 @@
-package com.explore.support.module.image
+package com.explore.support.modules.images
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,13 +7,21 @@ import android.net.Uri
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.explore.support.module.auth.Auth
-import com.explore.support.module.auth.BasicAuth
-import java.lang.Exception
+import com.explore.support.modules.auth.Auth
+import com.explore.support.modules.auth.BasicAuth
+
+data class Image(
+        var uri: Uri? = null,
+        var url: String? = null
+)
 
 fun ImageView.loadImage(imageUrl: String, auth: Auth){
     val glideAuth = LazyHeaders.Builder() // can be cached in a field and reused
@@ -25,11 +33,48 @@ fun ImageView.loadImage(imageUrl: String, auth: Auth){
         .into(this)
 }
 
-fun ImageView.loadImage(imageUrl : String){
-    imageUrl
+fun ImageView.loadImage(image: Image, callback : (Exception?) -> Unit){
+
+    if (image.uri != null){
+        callback(null)
+    } else if (!image.url.isNullOrEmpty()){
+        try {
+
+            Glide.with(this)
+                    .load(image.url)
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            callback(e)
+                            return false
+                        }
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                            callback(null)
+                            return false
+                        }
+                    })
+                    .into(this)
+        } catch (e: Exception){
+            e.printStackTrace()
+            callback(e)
+        }
+    } else {
+    }
+}
+
+fun ImageView.loadImage(imageUrl : String, callback : (Exception?) -> Unit){
     try {
         Glide.with(this)
                 .load(imageUrl)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        callback(e)
+                        return false
+                    }
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        callback(null)
+                        return false
+                    }
+                })
                 .into(this)
     } catch (e: Exception){
         e.printStackTrace()
@@ -37,7 +82,6 @@ fun ImageView.loadImage(imageUrl : String){
 }
 
 fun ImageView.loadImageInCircle(imageUrl : String){
-    imageUrl
     try {
         Glide.with(this)
                 .load(imageUrl)

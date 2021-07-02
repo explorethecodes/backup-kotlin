@@ -4,11 +4,14 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.Spinner
 import com.explore.support.R
-import com.explore.support.store.adapters.SpinnerStringAdapter
 
 fun Spinner.initSpinner(stringArray: List<String>, callback: (String) -> Unit) {
 
-    val adapter = SpinnerStringAdapter(context, R.layout.item_spinner_simple, stringArray.toMutableList())
+    val adapter = SpinnerStringAdapter(
+        context,
+        R.layout.item_spinner_simple,
+        stringArray.toMutableList()
+    )
     this.adapter = adapter
 
     onItemSelectedListener = object :

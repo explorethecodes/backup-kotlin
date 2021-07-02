@@ -1,4 +1,4 @@
-package com.explore.support.store.adapters
+package com.explore.support.utils.view.spinner
 
 import android.content.Context
 import android.view.LayoutInflater

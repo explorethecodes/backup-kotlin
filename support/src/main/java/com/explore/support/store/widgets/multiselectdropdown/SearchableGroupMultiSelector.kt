@@ -1,10 +1,11 @@
-package com.explore.support
+package com.explore.journovideos
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
+import com.explore.support.R
 import com.explore.support.databinding.WidgetMultiselectSearchableGroupBinding
 
 class SearchableGroupMultiSelector : LinearLayout {

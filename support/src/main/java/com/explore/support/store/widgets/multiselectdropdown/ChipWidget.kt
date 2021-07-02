@@ -1,4 +1,4 @@
-package com.explore.support
+package com.explore.journovideos
 
 import android.content.Context
 import android.util.AttributeSet

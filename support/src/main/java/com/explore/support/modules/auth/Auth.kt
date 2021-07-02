@@ -1,4 +1,4 @@
-package com.explore.support.module.auth
+package com.explore.support.modules.auth
 
 import android.util.Base64
 import com.bumptech.glide.load.model.LazyHeaderFactory

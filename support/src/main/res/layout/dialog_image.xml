@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="@android:color/transparent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:padding="5dp"
+                    android:id="@+id/id_image"
+                    android:minHeight="250dp"
+                    android:maxHeight="350dp"
+                    android:layout_width="match_parent"
+                    android:background="@color/colorWhite"
+                    android:layout_height="wrap_content"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/id_close"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:src="@drawable/ic_close"
+                    app:tint="@color/colorWhite"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"/>
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

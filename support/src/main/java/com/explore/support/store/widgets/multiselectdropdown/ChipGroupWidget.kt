@@ -1,14 +1,16 @@
-package com.explore.support
+package com.explore.journovideos
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import androidx.core.view.children
+import com.explore.support.R
 import com.explore.support.databinding.WidgetMultiselectChipGroupBinding
 import com.explore.support.utils.view.hide
 import com.explore.support.utils.view.show
 import kotlinx.android.synthetic.main.widget_multiselect_chip_group.view.*
+import java.lang.Exception
 
 class ChipGroupWidget : LinearLayout {
 
