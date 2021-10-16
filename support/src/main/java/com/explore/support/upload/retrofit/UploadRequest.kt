@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import com.explore.support.upload.UploadTracker
 import com.explore.support.upload.UploadType
+import com.explore.support.upload.getContentType
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okio.BufferedSink
@@ -16,19 +17,7 @@ class UploadRequest(
     private val uploadTracker: UploadTracker,
 ) : RequestBody() {
 
-    fun getContentType(): String {
-
-        var contentType : String
-        when(uploadType){
-            UploadType.FILE -> contentType = "file"
-            UploadType.VIDEO -> contentType = "video"
-            UploadType.IMAGE -> contentType = "image"
-        }
-
-        return contentType
-    }
-
-    override fun contentType() = MediaType.parse("${getContentType()}/*")
+    override fun contentType() = MediaType.parse("${getContentType(uploadType)}/*")
 
     override fun contentLength() = file.length()
 

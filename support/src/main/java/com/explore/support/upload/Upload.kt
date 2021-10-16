@@ -3,6 +3,7 @@ package com.explore.support.upload
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import com.explore.support.file.getFileName
+import com.explore.support.network.retrofit.Api
 import com.explore.support.upload.retrofit.UploadRequest
 import com.explore.support.upload.retrofit.UploadResponse
 import com.oneindia.journovideos.base.network.interceptor.NetworkInterceptor
@@ -15,6 +16,7 @@ import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import org.json.JSONException
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,6 +42,18 @@ enum class UploadType {
     IMAGE
 }
 
+fun getContentType(uploadType: UploadType): String {
+
+    var contentType : String
+    when(uploadType){
+        UploadType.FILE -> contentType = "file"
+        UploadType.VIDEO -> contentType = "video"
+        UploadType.IMAGE -> contentType = "image"
+    }
+
+    return contentType
+}
+
 fun FragmentActivity.uploadFile(uploadUri : Uri, uploadUrl: String, uploadType: UploadType, uploadTracker: UploadTracker) {
 
     val parcelFileDescriptor = this.contentResolver.openFileDescriptor(uploadUri, "r", null) ?: return
@@ -57,6 +71,7 @@ fun FragmentActivity.uploadFile(uploadUri : Uri, uploadUrl: String, uploadType: 
         }
 
         override fun onUploading(percentage: Int, uploadType: UploadType) {
+            uploadTracker.onUploading(percentage,uploadType)
         }
 
         override fun onUploadSuccess(uploadResponse: UploadResponse, uploadType: UploadType) {
@@ -67,40 +82,26 @@ fun FragmentActivity.uploadFile(uploadUri : Uri, uploadUrl: String, uploadType: 
 
     })
 
-    val okkHttpclient = OkHttpClient.Builder()
-        .readTimeout(10000, TimeUnit.SECONDS)
-        .connectTimeout(10000, TimeUnit.SECONDS)
-        .writeTimeout(10000, TimeUnit.SECONDS)
-        .addInterceptor(networkInterceptor)
-        .build()
-
-    val api = Retrofit.Builder()
-        .client(okkHttpclient)
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-        .create(Api::class.java)
-
     val networkInterceptor = NetworkInterceptor(this)
-    viewModel.videoUploadApi = Api(networkInterceptor)
+    val uploadApi = Api(networkInterceptor,uploadUrl)
 
-    viewModel.videoUploadCall = viewModel.videoUploadApi.upload(
+    val uploadCall = uploadApi.upload(
         MultipartBody.Part.createFormData(
             "file",
             file.name,
             body
         ),
-        RequestBody.create(MediaType.parse("multipart/form-data"), "video"),
-        RequestBody.create(MediaType.parse("multipart/form-data"), viewModel.getUser().id.toString())
+        RequestBody.create(MediaType.parse("multipart/form-data"), getContentType(uploadType)),
+        uploadUrl
     )
 
     try {
-        viewModel.videoUploadCall.enqueue(object : Callback<UploadResponse> {
+        uploadCall.enqueue(object : Callback<UploadResponse> {
             override fun onFailure(call: Call<UploadResponse>, t: Throwable) {
                 if(call.isCanceled){
-                    onUploadCancelled(UploadType.VIDEO)
+                    uploadTracker.onUploadCancelled(uploadType)
                 } else {
-                    onUploadFailed(t.message!!, UploadType.VIDEO)
+                    uploadTracker.onUploadFailed(t.message!!,uploadType)
                 }
             }
 
@@ -110,14 +111,10 @@ fun FragmentActivity.uploadFile(uploadUri : Uri, uploadUrl: String, uploadType: 
             ) {
                 if(response.isSuccessful){
                     response.body()?.let {
-                        onUploadSuccess(it, UploadType.VIDEO)
+                        uploadTracker.onUploadSuccess(it,uploadType)
                     }
-                    Log.d("ncm RESPONSE",response.body().toString())
                 }else{
                     val error = response.errorBody()?.string()
-
-                    Log.d("ncm RESPONSE",error.toString())
-
                     val message = StringBuilder()
                     error?.let{
                         try{
@@ -126,15 +123,13 @@ fun FragmentActivity.uploadFile(uploadUri : Uri, uploadUrl: String, uploadType: 
                         message.append("\n")
                     }
                     message.append("Error Code: ${response.code()}")
-
                     val tempMessage = "Something went wrong, Try to upload video again !"
-
-                    onUploadFailed(tempMessage,UploadType.VIDEO)
+                    uploadTracker.onUploadFailed(tempMessage,uploadType)
                 }
             }
         })
     } catch (e:Exception){
-        onUploadFailed(e.toString(),UploadType.VIDEO)
+        uploadTracker.onUploadFailed(e.toString(),uploadType)
     }
 }
 fun FragmentActivity.uploadFileResumable(uploadUri : Uri, uploadUrl: String, uploadType: UploadType, uploadTracker: UploadTracker){

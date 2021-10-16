@@ -1,5 +1,6 @@
 package com.explore.support.network.retrofit
 
+import com.explore.support.network.extractBaseUrl
 import com.explore.support.upload.retrofit.UploadResponse
 import com.oneindia.journovideos.base.network.interceptor.NetworkInterceptor
 import okhttp3.MultipartBody
@@ -15,16 +16,17 @@ interface Api {
 
     //---------------------------------------- UPLOAD -------------------------------------------//
     @Multipart
-    @POST("/api/producer-file-upload")
+    @POST
     fun upload(
             @Part file : MultipartBody.Part,
             @Part("type") desc: RequestBody,
-            @Part("user_id") user_id: RequestBody
+            @Url uploadUrl: String,
     ): Call<UploadResponse>
 
     companion object{
         operator fun invoke(
-            networkInterceptor: NetworkInterceptor
+                networkInterceptor: NetworkInterceptor,
+                uploadUrl: String
         ) : Api{
 
             val okkHttpclient = OkHttpClient.Builder()
@@ -36,7 +38,7 @@ interface Api {
 
             return Retrofit.Builder()
                 .client(okkHttpclient)
-                .baseUrl(BASE_URL)
+                .baseUrl(uploadUrl.extractBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(Api::class.java)
