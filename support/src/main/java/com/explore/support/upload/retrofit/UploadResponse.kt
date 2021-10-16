@@ -1,4 +1,4 @@
-package com.explore.support.file.upload
+package com.explore.support.upload.retrofit
 
 data class UploadResponse(
     var message: String? = null,
