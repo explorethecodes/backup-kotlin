@@ -175,5 +175,6 @@ fun FragmentActivity.uploadFileResumable(uploadUri : Uri, uploadUrl: String, upl
 
     } catch (e: Exception) {
 
+
     }
 }

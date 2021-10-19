@@ -1,11 +1,11 @@
-package com.explore.support.modules.chart
+package com.oneindia.support.modules.chart
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.explore.support.databinding.WidgetChartBinding
-import com.explore.support.charts.highcharts.drawChart
+import com.oneindia.support.modules.charts.highcharts.drawChart
 
 class ChartWidget : LinearLayout {
 
@@ -42,24 +42,24 @@ class ChartWidget : LinearLayout {
 interface ChartWidgetListener {
 }
 
-sealed class Chart
-
-data class PieChart(
+sealed class Chart(
     var type : String? = null,
     var title : String? = null,
     var sub_title : String? = null,
+    var values_in_percentage : Boolean = false
+)
+
+data class PieChart(
     var inputs : List<InputValue>? = null
 ) : Chart()
 
-data class InputValue(
-        var name : String,
-        var value : Int
-)
+data class LineChart(
+    var value_suffix : String? = null,
+    var xaxis: XAxis = XAxis(),
+    var yaxis: YAxis = YAxis()
+) : Chart()
 
 data class BarChart(
-        var type : String? = null,
-        var title : String? = null,
-        var sub_title : String? = null,
         var value_suffix : String? = null,
         var xaxis: XAxis = XAxis(),
         var yaxis: YAxis = YAxis()
@@ -72,6 +72,11 @@ data class XAxis(
 data class YAxis(
     var title : String? = null,
     var inputs : List<InputValueArray>? = null
+)
+
+data class InputValue(
+    var name : String,
+    var value : Int
 )
 
 data class InputValueArray(

@@ -8,23 +8,105 @@ import androidx.lifecycle.OnLifecycleEvent
 import java.text.SimpleDateFormat
 import java.util.*
 
-const val DATE_FORMAT_JOURNO = "yyyy-MM-dd HH:mm:ss"
-const val DATE_FORMAT_NOW = "dd/M/yyyy hh:mm:ss"
+const val DATE_FORMAT_TIME = "dd/M/yyyy hh:mm:ss"
 const val DATE_FORMAT_TODAY = "dd"
 const val DATE_FORMAT_MONTH = "MMM"
 const val DATE_FORMAT_YEAR = "yyyy"
 
 enum class DateFormat{
-    Now,
+    Time,
     Day,
     Month,
     Year
 }
 
+fun FragmentActivity.now() : String{
+    val sdf = SimpleDateFormat(DATE_FORMAT_TODAY)
+    val currentDate = sdf.format(Date())
+    return currentDate
+}
+
+fun FragmentActivity.now(dateFormat: String) : String{
+    val sdf = SimpleDateFormat(dateFormat)
+    val currentDate = sdf.format(Date())
+    return currentDate
+}
+
+fun now(dateFormat: String) : String{
+    val sdf = SimpleDateFormat(dateFormat)
+    val currentDate = sdf.format(Date())
+    return currentDate
+}
+
+fun FragmentActivity.now(dateFormat: DateFormat) : String{
+    var dateFromatString = DATE_FORMAT_TODAY
+    when(dateFormat){
+        DateFormat.Time -> dateFromatString = DATE_FORMAT_TIME
+        DateFormat.Day -> dateFromatString = DATE_FORMAT_TODAY
+        DateFormat.Month -> dateFromatString = DATE_FORMAT_MONTH
+        DateFormat.Year -> dateFromatString = DATE_FORMAT_YEAR
+    }
+    val sdf = SimpleDateFormat(dateFromatString)
+    val currentDate = sdf.format(Date())
+    return currentDate
+}
+
+fun String.toDate(dateFormat : String) : Date? {
+    var date : Date? =null
+    try {
+        date = SimpleDateFormat(dateFormat).parse(this)
+    } catch (e:Exception){
+        date = null
+    }
+    return date
+}
+
+fun getDateDifference(startDate: Date,endDate: Date): Long {
+    return endDate.getTime() - startDate.getTime()
+}
+fun getDifferenceInDays(startDate: Date, endDate: Date): Long {
+
+    var different: Long = endDate.getTime() - startDate.getTime()
+
+    val secondsInMilli: Long = 1000
+    val minutesInMilli = secondsInMilli * 60
+    val hoursInMilli = minutesInMilli * 60
+    val daysInMilli = hoursInMilli * 24
+
+    val elapsedDays = different / daysInMilli
+
+    return elapsedDays
+}
+
+fun printDifference(startDate: Date, endDate: Date) {
+    //milliseconds
+    var different: Long = endDate.getTime() - startDate.getTime()
+    println("startDate : $startDate")
+    println("endDate : $endDate")
+    println("different : $different")
+
+    val secondsInMilli: Long = 1000
+    val minutesInMilli = secondsInMilli * 60
+    val hoursInMilli = minutesInMilli * 60
+    val daysInMilli = hoursInMilli * 24
+
+    val elapsedDays = different / daysInMilli
+
+    different = different % daysInMilli
+    val elapsedHours = different / hoursInMilli
+    different = different % hoursInMilli
+    val elapsedMinutes = different / minutesInMilli
+    different = different % minutesInMilli
+    val elapsedSeconds = different / secondsInMilli
+    System.out.printf(
+            "%d days, %d hours, %d minutes, %d seconds%n",
+            elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds)
+}
+
 fun FragmentActivity.counterTimer(expireOn : String, lifecycle: Lifecycle, callback: (Boolean,String, String, String, String) -> Unit){
 
-    val currentDateTime = now(DATE_FORMAT_JOURNO).toDate(DATE_FORMAT_JOURNO)
-    val endDateTime = expireOn.toDate(DATE_FORMAT_JOURNO)
+    val currentDateTime = now(DATE_FORMAT_TIME).toDate(DATE_FORMAT_TIME)
+    val endDateTime = expireOn.toDate(DATE_FORMAT_TIME)
 
     if (currentDateTime!==null && endDateTime!=null){
 
@@ -107,91 +189,4 @@ fun FragmentActivity.counterTimer(expireOn : String, lifecycle: Lifecycle, callb
             callback(true,"","","","")
         }
     }
-}
-
-fun String.toDate(dateFormat : String) : Date? {
-    var date : Date? =null
-    try {
-        date = SimpleDateFormat(dateFormat).parse(this)
-    } catch (e:Exception){
-        date = null
-    }
-    return date
-}
-
-fun getDateDifference(startDate: Date,endDate: Date): Long {
-    return endDate.getTime() - startDate.getTime()
-}
-fun FragmentActivity.now() : String{
-    val sdf = SimpleDateFormat(DATE_FORMAT_TODAY)
-    val currentDate = sdf.format(Date())
-    return currentDate
-}
-
-fun FragmentActivity.now(dateFormat: String) : String{
-    val sdf = SimpleDateFormat(dateFormat)
-    val currentDate = sdf.format(Date())
-    return currentDate
-}
-
-fun now(dateFormat: String) : String{
-    val sdf = SimpleDateFormat(dateFormat)
-    val currentDate = sdf.format(Date())
-    return currentDate
-}
-
-fun FragmentActivity.now(dateFormat: DateFormat) : String{
-    var dateFromatString = DATE_FORMAT_TODAY
-    when(dateFormat){
-        DateFormat.Now -> dateFromatString = DATE_FORMAT_NOW
-        DateFormat.Day -> dateFromatString = DATE_FORMAT_TODAY
-        DateFormat.Month -> dateFromatString = DATE_FORMAT_MONTH
-        DateFormat.Year -> dateFromatString = DATE_FORMAT_YEAR
-    }
-    val sdf = SimpleDateFormat(dateFromatString)
-    val currentDate = sdf.format(Date())
-    return currentDate
-}
-
-fun today(){
-
-}
-
-fun getDifferenceInDays(startDate: Date, endDate: Date): Long {
-
-    var different: Long = endDate.getTime() - startDate.getTime()
-
-    val secondsInMilli: Long = 1000
-    val minutesInMilli = secondsInMilli * 60
-    val hoursInMilli = minutesInMilli * 60
-    val daysInMilli = hoursInMilli * 24
-
-    val elapsedDays = different / daysInMilli
-
-    return elapsedDays
-}
-
-fun printDifference(startDate: Date, endDate: Date) {
-    //milliseconds
-    var different: Long = endDate.getTime() - startDate.getTime()
-    println("startDate : $startDate")
-    println("endDate : $endDate")
-    println("different : $different")
-
-    val secondsInMilli: Long = 1000
-    val minutesInMilli = secondsInMilli * 60
-    val hoursInMilli = minutesInMilli * 60
-    val daysInMilli = hoursInMilli * 24
-
-    val elapsedDays = different / daysInMilli
-
-    different = different % daysInMilli
-    val elapsedHours = different / hoursInMilli
-    different = different % hoursInMilli
-    val elapsedMinutes = different / minutesInMilli
-    different = different % minutesInMilli
-    val elapsedSeconds = different / secondsInMilli
-    System.out.printf(
-            "%d days, %d hours, %d minutes, %d seconds%n",
-            elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds)
 }

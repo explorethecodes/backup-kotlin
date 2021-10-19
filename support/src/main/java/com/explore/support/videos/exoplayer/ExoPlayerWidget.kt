@@ -1,4 +1,4 @@
-package com.explore.support.videos.videoplayer
+package com.explore.support.videos.exoplayer
 
 import android.content.Context
 import android.net.Uri
@@ -19,9 +19,11 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.explore.support.databinding.WidgetVideoPlayerBinding
 import com.explore.support.context.lifecycleOwner
+import com.explore.support.videos.Video
+import com.explore.support.videos.VideoPlayerWidgetListener
 import kotlinx.android.synthetic.main.widget_video_player.view.*
 
-class VideoPlayerWidget : LinearLayout {
+class ExoPlayerWidget : LinearLayout {
 
     private var videoPlayerWidgetListener: VideoPlayerWidgetListener? = null
     lateinit var video : Video
@@ -157,13 +159,3 @@ class VideoPlayerWidget : LinearLayout {
     }
 
 }
-
-interface VideoPlayerWidgetListener{
-    fun onChangeVideo()
-    fun onDeleteVideo(videoPlayerWidget: VideoPlayerWidget)
-}
-
-data class Video(
-        val uri: Uri?,
-        val url: String?
-)

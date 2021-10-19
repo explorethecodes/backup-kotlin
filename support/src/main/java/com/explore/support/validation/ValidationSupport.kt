@@ -5,6 +5,22 @@ import android.util.Patterns
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+interface ValidationListener {
+    fun onValidation(validationResult: ValidationResult)
+}
+
+sealed class ValidationResult
+
+object ValidationSuccess : ValidationResult()
+
+open class ValdationFailed(val reason:String): ValidationResult()
+
+open class ValdationWarning(val reason:String): ValidationResult()
+
+class StringValidationFailed(reason:String): ValdationFailed(reason)
+
+class EmailValidationFailed(reason:String): ValdationFailed(reason)
+
 fun isValidMobile(phone: CharSequence?): Boolean {
     return Patterns.PHONE.matcher(phone).matches()
 }

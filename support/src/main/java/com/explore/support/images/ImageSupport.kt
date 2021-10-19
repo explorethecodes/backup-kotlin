@@ -23,6 +23,25 @@ data class Image(
         var url: String? = null
 )
 
+interface GlideCallbacks{
+    fun onLoadFailed(errorDrawable: Drawable?)
+    fun onLoadCleared(placeholder: Drawable?)
+    fun onResourceReady(bitmap: Bitmap)
+}
+
+@BindingAdapter("image")
+fun loadImage(view: ImageView, url: String) {
+    Glide.with(view)
+            .load(url)
+            .into(view)
+}
+
+fun ImageView.loadImage(imageUri : Uri){
+    Glide.with(this)
+            .load(imageUri)
+            .into(this)
+}
+
 fun ImageView.loadImage(imageUrl: String, auth: Auth){
     val glideAuth = LazyHeaders.Builder() // can be cached in a field and reused
         .addHeader("Authorization", BasicAuth(auth))
@@ -92,12 +111,6 @@ fun ImageView.loadImageInCircle(imageUrl : String){
     }
 }
 
-fun ImageView.loadImage(imageUri : Uri){
-    Glide.with(this)
-        .load(imageUri)
-        .into(this)
-}
-
 fun Context.loadNotificationImages(imageUrl: String,glideCallbacks: GlideCallbacks) {
     Glide.with(this)
         .asBitmap()
@@ -132,17 +145,4 @@ class NotificationImages(
         fun backgroundImage(backgroundImage: String) = apply { this.backgroundImage = backgroundImage }
         fun build() = NotificationImages(backgroundImage)
     }
-}
-
-interface GlideCallbacks{
-    fun onLoadFailed(errorDrawable: Drawable?)
-    fun onLoadCleared(placeholder: Drawable?)
-    fun onResourceReady(bitmap: Bitmap)
-}
-
-@BindingAdapter("image")
-fun loadImg(view: ImageView, url: String) {
-    Glide.with(view)
-        .load(url)
-        .into(view)
 }

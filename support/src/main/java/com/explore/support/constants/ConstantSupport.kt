@@ -1,6 +1,6 @@
 package com.explore.support.constants
 
-class Constants {
+class ConstantSupport {
     companion object{
     }
 
