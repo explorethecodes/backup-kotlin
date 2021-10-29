@@ -13,6 +13,9 @@ const val DATE_FORMAT_TODAY = "dd"
 const val DATE_FORMAT_MONTH = "MMM"
 const val DATE_FORMAT_YEAR = "yyyy"
 
+const val DATE_FORMAT_HOUR_24 = "HH"
+const val DATE_FORMAT_MONTH_NUMBER = "MM"
+
 enum class DateFormat{
     Time,
     Day,
