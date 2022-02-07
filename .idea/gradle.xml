@@ -13,10 +13,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/support" />
-            <option value="$PROJECT_DIR$/support-charts" />
-            <option value="$PROJECT_DIR$/support-images" />
-            <option value="$PROJECT_DIR$/support-ui" />
-            <option value="$PROJECT_DIR$/support-videos" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
