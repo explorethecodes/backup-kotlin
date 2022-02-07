@@ -1,3 +1,7 @@
+include ':support-ui'
+include ':support-images'
+include ':support-videos'
+include ':support-charts'
 include ':support'
 include ':app'
 rootProject.name = "Kotlin"
